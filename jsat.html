@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON - Standardized Testing</title>
+    <style>
+        body {
+            background-color: #f0e0d6;
+            color: #800000;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 20px;
+            font-size: 13px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        header {
+            border-bottom: 1px solid #d9bfb7;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .board-title {
+            color: #af0a0f;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .board-subtitle {
+            font-size: 12px;
+            color: #000000;
+            margin-top: 3px;
+        }
+
+        .instructions-box {
+            background-color: #ffffff;
+            border: 1px solid #000000;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #000000;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .question-post {
+            background-color: #eed9c4;
+            border: 1px solid #d9bfb7;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .post-header {
+            font-size: 11px;
+            color: #117743;
+            margin-bottom: 8px;
+            border-bottom: 1px dashed #d9bfb7;
+            padding-bottom: 4px;
+        }
+
+        .post-subject {
+            color: #0f0c5d;
+            font-weight: bold;
+        }
+
+        .poster-name {
+            color: #117743;
+            font-weight: bold;
+        }
+
+        .post-num {
+            color: #34345c;
+        }
+
+        .question-body {
+            font-family: "Times New Roman", Times, Georgia, serif;
+            font-size: 15px;
+            color: #000000;
+        }
+
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .choices-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .choice-item {
+            margin: 6px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .choice-item input {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .choice-text {
+            cursor: pointer;
+        }
+
+        .action-area {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #eed9c4;
+            border: 1px solid #d9bfb7;
+            text-align: center;
+        }
+
+        button {
+            background-color: #f0e0d6;
+            border: 1px solid #d9bfb7;
+            color: #800000;
+            font-weight: bold;
+            padding: 8px 16px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ffffff;
+        }
+
+        .results-box {
+            display: none;
+            background-color: #ffffff;
+            border: 2px solid #000000;
+            padding: 20px;
+            margin-top: 20px;
+            color: #000000;
+            font-family: "Times New Roman", Times, serif;
+            text-align: center;
+        }
+
+        .score-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .score-grade {
+            font-size: 32px;
+            font-weight: bold;
+            color: #117743;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <a href="index.html" id="site-logo">Home if you failed or you wanna go home</a>
+            <br>
+            <h1 class="board-title">JSON - Standardized Testing</h1>
+            <div class="board-subtitle">Form 67-C: Basic Ball Knowledge</div>
+        </header>
+
+        <div class="instructions-box">
+            <strong>Directions:</strong> Read each question <strong>carefully</strong> and then click the answer that your brain tells you is right. Once all ten questions are finished, click the <strong>submit test sheet</strong> button at the bottom to get your results.
+        </div>
+
+        <form id="quizForm">
+            <div id="questions-container"></div>
+
+            <div class="action-area">
+                <button type="button" id="submitBtn" onclick="submitQuiz()">Submit Test Sheet</button>
+            </div>
+        </form>
+
+        <div class="results-box" id="resultsBox">
+            <div class="score-title">Your Score Sheet</div>
+            <div style="font-size: 14px;">AP Score Equivalent:</div>
+            <div class="score-grade" id="grade-output">5</div>
+            <div style="font-size: 14px; margin-bottom: 15px;" id="raw-score-output">Correct Answers: 10/10</div>
+            <button type="button" onclick="nextQuiz()">Proceed to Next Quiz Set</button>
+        </div>
+    </div>
+
+    <script>
+        const questionPool = [
+            { q: "What is 15 multiplied by 6?", a: ["80", "90", "100", "120"], correct: 1, cat: "Math" },
+            { q: "In what year did World War II end?", a: ["1918", "1939", "1945", "1953"], correct: 2, cat: "History" },
+            { q: "What is the chemical symbol for Gold?", a: ["Ag", "Au", "Fe", "Gd"], correct: 1, cat: "Science" },
+            { q: "Solve for x: 3x + 5 = 20.", a: ["3", "5", "15", "4"], correct: 1, cat: "Math" },
+            { q: "Who was the first President of the United States?", a: ["Thomas Jefferson", "John Adams", "George Washington", "Abraham Lincoln"], correct: 2, cat: "History" },
+            { q: "Which planet is closest to the Sun?", a: ["Venus", "Earth", "Mercury", "Mars"], correct: 2, cat: "Science" },
+            { q: "What is the square root of 144?", a: ["10", "11", "12", "14"], correct: 2, cat: "Math" },
+            { q: "The Magna Carta was signed in which year?", a: ["1066", "1215", "1492", "1776"], correct: 1, cat: "History" },
+            { q: "What gas do plants absorb during photosynthesis?", a: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"], correct: 1, cat: "Science" },
+            { q: "What is 7 cubed (7³)?", a: ["49", "243", "343", "512"], correct: 2, cat: "Math" },
+            { q: "Which ancient empire constructed the Colosseum?", a: ["Greek", "Roman", "Egyptian", "Persian"], correct: 1, cat: "History" },
+            { q: "What is the primary organelle referred to as the 'powerhouse of the cell'?", a: ["Nucleus", "Ribosome", "Mitochondria", "Chloroplast"], correct: 2, cat: "Science" },
+            { q: "What is the value of Pi (π) rounded to two decimal places?", a: ["3.12", "3.14", "3.16", "3.18"], correct: 1, cat: "Math" },
+            { q: "Who delivered the famous 'I Have a Dream' speech in 1963?", a: ["Malcolm X", "Martin Luther King Jr.", "Frederick Douglass", "Booker T. Washington"], correct: 1, cat: "History" },
+            { q: "Which is the largest ocean on Earth?", a: ["Atlantic", "Indian", "Arctic", "Pacific"], correct: 3, cat: "Science" },
+            { q: "If a triangle has angles of 90 and 45 degrees, what is the third angle in degrees?", a: ["30", "45", "60", "90"], correct: 1, cat: "Math" },
+            { q: "Which European country gifted the Statue of Liberty to the United States?", a: ["United Kingdom", "France", "Germany", "Italy"], correct: 1, cat: "History" },
+            { q: "What is the primary state of matter of the Sun?", a: ["Solid", "Liquid", "Gas", "Plasma"], correct: 3, cat: "Science" },
+            { q: "What is 120 divided by 8?", a: ["12", "15", "18", "20"], correct: 1, cat: "Math" },
+            { q: "The French Revolution began in which historical year?", a: ["1776", "1789", "1804", "1815"], correct: 1, cat: "History" },
+            { q: "What is the most abundant gas found in Earth's atmosphere?", a: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Argon"], correct: 2, cat: "Science" },
+            { q: "What is the value of 5 factorial (5!)?", a: ["24", "60", "120", "150"], correct: 2, cat: "Math" },
+            { q: "Who was the Prime Minister of the United Kingdom during most of World War II?", a: ["Neville Chamberlain", "Winston Churchill", "Clement Attlee", "Margaret Thatcher"], correct: 1, cat: "History" },
+            { q: "What is the approximate speed of light?", a: ["300,000 km/s", "150,000 km/s", "3,000 km/s", "30,000 km/s"], correct: 0, cat: "Science" },
+            { q: "What is the formula for the area of a circle?", a: ["2πr", "πd", "πr²", "½bh"], correct: 2, cat: "Math" },
+            { q: "Which ancient civilization built the Pyramids of Giza?", a: ["Romans", "Aztecs", "Egyptians", "Babylonians"], correct: 2, cat: "History" },
+            { q: "Which human organ is primarily responsible for pumping blood?", a: ["Brain", "Lungs", "Liver", "Heart"], correct: 3, cat: "Science" },
+            { q: "Evaluate the expression: 8 + 4 × 2 - 3.", a: ["21", "13", "11", "9"], correct: 1, cat: "Math" },
+            { q: "What was the name of the ship that brought the Pilgrims to America in 1620?", a: ["Santa Maria", "Mayflower", "Beagle", "Endeavour"], correct: 1, cat: "History" },
+            { q: "What is the boiling point of water in Celsius at sea level?", a: ["50°C", "100°C", "150°C", "200°C"], correct: 1, cat: "Science" }
+        ];
+
+        let currentQuizIndex = parseInt(localStorage.getItem('astt_quiz_index_v2')) || 0;
+        const questionsPerQuiz = 10;
+        const poolSize = questionPool.length;
+
+        const step = 7; 
+        const startIndex = (currentQuizIndex * step) % poolSize;
+        
+        let currentQuestions = [];
+        for (let i = 0; i < questionsPerQuiz; i++) {
+            currentQuestions.push(questionPool[(startIndex + i) % poolSize]);
+        }
+
+        const container = document.getElementById('questions-container');
+        currentQuestions.forEach((q, index) => {
+            const postNum = 2314 + index + (currentQuizIndex * 15);
+            const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'short', year: '2-digit', month: '2-digit', day: '2-digit' });
+            const timeStr = new Date().toLocaleTimeString('en-US', { hour12: false });
+
+            const postHtml = `
+                <div class="question-post">
+                    <div class="post-header">
+                        <span class="post-subject">[${q.cat}]</span> 
+                        <span class="poster-name">Random Tester</span> 
+                        ${dateStr}(Sun)${timeStr} 
+                        No. <span class="post-num">${postNum}</span>
+                    </div>
+                    <div class="question-body">
+                        <div class="question-text">Question ${index + 1}. ${q.q}</div>
+                        <ul class="choices-list">
+                            ${q.a.map((choice, cIdx) => `
+                                <li class="choice-item">
+                                    <label style="display: flex; align-items: center; width: 100%;">
+                                        <input type="radio" name="q${index}" value="${cIdx}">
+                                        <span class="choice-text">(${['A', 'B', 'C', 'D'][cIdx]}) ${choice}</span>
+                                    </label>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += postHtml;
+        });
+
+        function getAPGrade(score) {
+            if (score >= 9) return { grade: 5, status: "Extremely Well Qualified" };
+            if (score >= 7) return { grade: 4, status: "Well Qualified" };
+            if (score >= 5) return { grade: 3, status: "Qualified" };
+            if (score >= 3) return { grade: 2, status: "Possibly Qualified" };
+            return { grade: 1, status: "No Recommendation" };
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            const form = document.getElementById('quizForm');
+
+            currentQuestions.forEach((q, index) => {
+                const selected = form.querySelector(`input[name="q${index}"]:checked`);
+                if (selected && parseInt(selected.value) === q.correct) {
+                    score++;
+                }
+            });
+
+            const result = getAPGrade(score);
+
+            document.getElementById('grade-output').innerHTML = `${result.grade} <span style="font-size:16px; font-weight:normal;">(${result.status})</span>`;
+            document.getElementById('raw-score-output').textContent = `Correct Answers: ${score} / ${questionsPerQuiz}`;
+
+            document.getElementById('resultsBox').style.display = 'block';
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').style.opacity = '0.5';
+
+            document.getElementById('resultsBox').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function nextQuiz() {
+            currentQuizIndex++;
+            localStorage.setItem('astt_quiz_index_v2', currentQuizIndex);
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>

@@ -1,53 +1,518 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Simple Clicker Game</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f4f4f4;
-        text-align: center;
-        padding-top: 50px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senddit - Discussion Forum, Chatrooms and Dank Memes</title>
+    <style>
+        body {
+            background-color: #e1ebf2; 
+            color: #333333;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: 11px;
+            margin: 0;
+            padding: 15px;
+        }
 
-    #counter {
-        font-size: 48px;
-        margin-bottom: 20px;
-    }
+        a {
+            color: #105289;
+            text-decoration: underline;
+            cursor: pointer;
+        }
 
-    #clickButton {
-        padding: 20px 40px;
-        font-size: 24px;
-        background: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: 0.2s;
-    }
+        a:hover {
+            color: #d31141;
+        }
 
-    #clickButton:hover {
-        background: #45a049;
-    }
-</style>
+        .forum-wrapper {
+            max-width: 950px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border: 1px solid #bcbcbc;
+            box-shadow: 0px 0px 8px rgba(0,0,0,0.1);
+        }
+
+        .forum-header {
+            background-color: #105289; 
+            color: #ffffff;
+            padding: 15px;
+        }
+
+        .forum-logo {
+            font-size: 22px;
+            font-weight: bold;
+            font-family: "Trebuchet MS", Arial, sans-serif;
+            margin: 0;
+        }
+
+        .forum-desc {
+            font-size: 11px;
+            color: #aae0ff;
+            margin-top: 3px;
+        }
+
+        .forum-nav {
+            background-color: #ecf3f7;
+            border-bottom: 1px solid #cad9ea;
+            padding: 6px 12px;
+            font-size: 10px;
+            color: #555555;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .columns-container {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .left-col {
+            flex-grow: 1;
+            width: 65%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .right-col {
+            width: 35%;
+            min-width: 250px;
+        }
+
+        .thread-title-bar {
+            background-color: #105289;
+            color: #ffffff;
+            padding: 6px 10px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .posts-scroll-container {
+            border: 1px solid #bcbcbc;
+            border-top: none;
+            max-height: 400px;
+            overflow-y: auto;
+            background-color: #ffffff;
+        }
+
+        .post-row {
+            display: flex;
+            border-bottom: 1px solid #cad9ea;
+        }
+
+        .post-row:nth-child(even) {
+            background-color: #ecf3f7;
+        }
+
+        .post-row:nth-child(odd) {
+            background-color: #f4f8fa;
+        }
+
+        .post-profile {
+            width: 120px;
+            min-width: 120px;
+            padding: 10px;
+            border-right: 1px solid #cad9ea;
+            text-align: left;
+            font-size: 10px;
+            color: #555555;
+        }
+
+        .profile-name {
+            font-weight: bold;
+            font-size: 11px;
+            color: #105289;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            background-color: #dcdad3;
+            border: 1px solid #a1a09a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 10px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .post-content {
+            padding: 10px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .post-date {
+            font-size: 9px;
+            color: #777777;
+            border-bottom: 1px solid #dbdbdb;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        .post-body {
+            font-size: 11px;
+            line-height: 1.4;
+            color: #222222;
+        }
+
+        .signature {
+            border-top: 1px dashed #cccccc;
+            margin-top: 15px;
+            padding-top: 4px;
+            font-size: 9px;
+            color: #666666;
+            font-style: italic;
+        }
+
+        .greentext {
+            color: #789922;
+        }
+
+        .quick-reply {
+            margin-top: 15px;
+            border: 1px solid #bcbcbc;
+            background-color: #f4f8fa;
+        }
+
+        .quick-reply-header {
+            background-color: #e1ebf2;
+            padding: 5px 10px;
+            font-weight: bold;
+            border-bottom: 1px solid #bcbcbc;
+        }
+
+        .quick-reply-body {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .clicker-btn {
+            background-color: #105289;
+            color: #ffffff;
+            border: 1px solid #0d4370;
+            padding: 10px 20px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .clicker-btn:hover {
+            background-color: #d31141;
+        }
+
+        .ucp-box {
+            border: 1px solid #bcbcbc;
+            background-color: #f4f8fa;
+            margin-bottom: 15px;
+        }
+
+        .ucp-header {
+            background-color: #105289;
+            color: #ffffff;
+            padding: 6px 10px;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .ucp-content {
+            padding: 10px;
+        }
+
+        .upgrade-card {
+            background-color: #ffffff;
+            border: 1px solid #cad9ea;
+            padding: 8px;
+            margin-bottom: 8px;
+        }
+
+        .upgrade-name {
+            font-weight: bold;
+            color: #105289;
+        }
+
+        .upgrade-effect {
+            font-size: 10px;
+            color: #555555;
+            margin: 3px 0;
+        }
+
+        .upgrade-btn {
+            background-color: #ecf3f7;
+            border: 1px solid #a1a09a;
+            color: #333333;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 3px 6px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .upgrade-btn:hover {
+            background-color: #ffffff;
+        }
+
+        .upgrade-btn:disabled {
+            background-color: #e0e0e0;
+            color: #888888;
+            cursor: not-allowed;
+        }
+
+        .forum-footer {
+            background-color: #ecf3f7;
+            border-top: 1px solid #cad9ea;
+            padding: 10px;
+            font-size: 10px;
+            color: #555555;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Simple Clicker Game</h1>
-<div id="counter">0</div>
-<button id="clickButton">Click Me!</button>
+    <div class="forum-wrapper">
+         <a href="index.html" id="site-logo">Home</a>
+        <div class="forum-header">
+            <h1 class="forum-logo">Senddit</h1>
+            <div class="forum-desc">Senddit - Discussion Forum, Chatrooms and Dank Memes</div>
+        </div>
 
-<script>
-    let count = 0;
-    const counterDisplay = document.getElementById("counter");
-    const button = document.getElementById("clickButton");
+        <div class="forum-nav">
+            <div>
+                <a>Board Index</a> ‹ <a>Chud Chatroom</a>
+            </div>
+            <div>
+                User: <strong>chuddington_667</strong> | Logged In
+            </div>
+        </div>
 
-    button.addEventListener("click", () => {
-        count++;
-        counterDisplay.textContent = count;
-    });
-</script>
+        <div class="columns-container">
 
+            <div class="left-col">
+                <div class="thread-title-bar">
+                    Thread: Spam Thread for DANK MEMES!!! 🤣🤣
+                </div>
+
+                <div class="posts-scroll-container" id="postsContainer">
+
+                    <div class="post-row">
+                        <div class="post-profile">
+                            <span class="profile-name">LiamWenerAdmin79</span>
+                            <div class="profile-avatar">[ADMIN]</div>
+                            Join Date: June 2026<br>
+                            Posts: 14,842
+                        </div>
+                        <div class="post-content">
+                            <div class="post-date">Posted: Jun 12, 2026 04:32 PM</div>
+                            <div class="post-body">
+                                Welcome to the thread for DANK MEMES!! Spam posts, memes and jokes. Violation of Senddit Policies will result in suspensions from Nicholas Sullivan Friedman.
+                            </div>
+                            <div class="signature">
+
+                                <br>
+                                The server is up to date.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="quick-reply">
+                    <div class="quick-reply-header">New Senddit Chat</div>
+                    <div class="quick-reply-body">
+                        <p style="margin-top:0; font-size:10px; color:#555;">Write anything or submit blank text to increase post status</p>
+                        <input type="text" id="quickReplyInput" style="width: 80%; padding: 4px; font-size:11px; margin-bottom:10px;" placeholder="chud..."><br>
+                        <button class="clicker-btn" onclick="submitPost()">Submit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-col">
+
+                <div class="ucp-box">
+                    <div class="ucp-header">User Control Panel - Stats</div>
+                    <div class="ucp-content">
+                        <strong>My Post Count: <span id="stat-posts" style="color:#d31141; font-size:14px;">0</span></strong>
+                        <div style="margin-top: 5px;">Auto-Posts / Sec: <span id="stat-cps">0</span></div>
+                    </div>
+                </div>
+
+                <div class="ucp-box">
+                    <div class="ucp-header">User Control Panel - Store Upgrades</div>
+                    <div class="ucp-content">
+
+                        <div class="upgrade-card">
+                            <div class="upgrade-name">56k Spambot Script</div>
+                            <div class="upgrade-effect">+1 Post per second</div>
+                            <div class="upgrade-effect">Owned: <span id="upg-bot-owned">0</span></div>
+                            <button class="upgrade-btn" id="btn-bot" onclick="buyUpgrade('bot')">Buy for 15 Posts</button>
+                        </div>
+
+                        <div class="upgrade-card">
+                            <div class="upgrade-name">JSON Spambot 6.0</div>
+                            <div class="upgrade-effect">+10 Posts per second</div>
+                            <div class="upgrade-effect">Owned: <span id="upg-cam-owned">0</span></div>
+                            <button class="upgrade-btn" id="btn-cam" onclick="buyUpgrade('cam')">Buy for 100 Posts</button>
+                        </div>
+
+                        <div class="upgrade-card">
+                            <div class="upgrade-name">Liam Wener Hacks</div>
+                            <div class="upgrade-effect">+50 Posts per second</div>
+                            <div class="upgrade-effect">Owned: <span id="upg-mod-owned">0</span></div>
+                            <button class="upgrade-btn" id="btn-mod" onclick="buyUpgrade('mod')">Buy for 500 Posts</button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="forum-footer">
+            Total posts in database: 69,420 | Active Users online: 6,767<br>
+            Server process built on 2026 RHS Dell Laptops. Powered by LiamWener © 2026.
+        </div>
+
+    </div>
+
+    <script>
+        let posts = 0;
+        let cps = 0;
+
+        let ownedBots = 0;
+        let ownedCams = 0;
+        let ownedMods = 0;
+
+        let costBot = 15;
+        let costCam = 100;
+        let costMod = 500;
+
+        const botNames = ["j0e_j00st", "finnreilly29", "nicholas_sf88", "K4yvon_S4d4t", "WebSurfer99", "3dprinter_rebel"];
+        
+        const textSnippets = [
+            "chud",
+            "shut up bru im tryna study",
+            "get memed on XD",
+            "yes Liam you're a chud",
+            "play some new The Hellp",
+            "> Be me, posting on a dead forum in 2026",
+            "can anybody crack FL Studio for me",
+            "die",
+            "ouu shi"
+        ];
+
+        function submitPost() {
+            posts = posts + 1;
+            
+            const inputField = document.getElementById('quickReplyInput');
+            let text = inputField.value.trim();
+            if (text === "") {
+                text = "chud";
+            }
+            inputField.value = "";
+
+            appendPost("chuddington_667", "Junior Member", text, "June 2026", posts);
+            updateUI();
+        }
+
+        function appendPost(username, rank, bodyText, joinDate, postCount) {
+            const container = document.getElementById('postsContainer');
+            
+            const now = new Date();
+            const dateString = now.toLocaleDateString() + " " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+            let formattedBody = bodyText;
+            if (bodyText.startsWith(">")) {
+                formattedBody = `<span class="greentext">${bodyText}</span>`;
+            }
+
+            const postRow = document.createElement('div');
+            postRow.className = 'post-row';
+            postRow.innerHTML = `
+                <div class="post-profile">
+                    <span class="profile-name">${username}</span>
+                    <div style="font-style: italic; color:#777;">${rank}</div>
+                    <div class="profile-avatar">Avatar</div>
+                    Join Date: ${joinDate}<br>
+                    Posts: ${postCount}
+                </div>
+                <div class="post-content">
+                    <div class="post-date">Posted: ${dateString}</div>
+                    <div class="post-body">${formattedBody}</div>
+                    <div class="signature">
+                        _________________<br>
+                        "Certified Senddit Chud"
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(postRow);
+
+            if (container.children.length > 15) {
+                container.removeChild(container.firstChild);
+            }
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function buyUpgrade(type) {
+            if (type === 'bot' && posts >= costBot) {
+                posts = posts - costBot;
+                ownedBots = ownedBots + 1;
+                costBot = Math.floor(costBot * 1.2);
+            }
+            else if (type === 'cam' && posts >= costCam) {
+                posts = posts - costCam;
+                ownedCams = ownedCams + 1;
+                costCam = Math.floor(costCam * 1.2);
+            }
+            else if (type === 'mod' && posts >= costMod) {
+                posts = posts - costMod;
+                ownedMods = ownedMods + 1;
+                costMod = Math.floor(costMod * 1.2);
+            }
+
+            cps = (ownedBots * 1) + (ownedCams * 10) + (ownedMods * 50);
+            updateUI();
+        }
+
+        function updateUI() {
+            document.getElementById('stat-posts').textContent = Math.floor(posts);
+            document.getElementById('stat-cps').textContent = cps;
+
+            document.getElementById('upg-bot-owned').textContent = ownedBots;
+            document.getElementById('upg-cam-owned').textContent = ownedCams;
+            document.getElementById('upg-mod-owned').textContent = ownedMods;
+
+            document.getElementById('btn-bot').textContent = "Buy for " + costBot + " Posts";
+            document.getElementById('btn-cam').textContent = "Buy for " + costCam + " Posts";
+            document.getElementById('btn-mod').textContent = "Buy for " + costMod + " Posts";
+
+            document.getElementById('btn-bot').disabled = posts < costBot;
+            document.getElementById('btn-cam').disabled = posts < costCam;
+            document.getElementById('btn-mod').disabled = posts < costMod;
+        }
+
+        setInterval(function() {
+            if (cps > 0) {
+                posts = posts + cps;
+                updateUI();
+
+                const randomUser = botNames[Math.floor(Math.random() * botNames.length)];
+                const randomText = textSnippets[Math.floor(Math.random() * textSnippets.length)];
+                const randomCount = Math.floor(Math.random() * 2000) + 10;
+                appendPost(randomUser, "Registered Member", randomText, "June 2026", randomCount);
+            }
+        }, 1000);
+
+        updateUI();
+    </script>
 </body>
 </html>

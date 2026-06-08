@@ -8,65 +8,40 @@
   <link href="https://fonts.googleapis.com/css2?family=Tahoma:wght@400;700&display=swap" rel="stylesheet"/>
 
   <style>
-    /* ================================================================
-       🎨 CUSTOMIZATION VARIABLES — change these to restyle the page
-       ================================================================ */
     :root {
-      /* --- GLOBAL COLORS --- */
-      --page-bg:           #d6daf0;        /* 4chan-ish lavender-grey bg  */
-      --page-text:         #000000;        /* body text                   */
-
-      /* --- TOP NAV BAR (YouTube-style) --- */
-      --nav-bg:            #1a1a2e;        /* dark nav background         */
-      --nav-accent:        #cc0000;        /* YouTube red logo accent     */
-      --nav-text:          #ffffff;        /* nav text color              */
-      --nav-link:          #9ab0d4;        /* nav link color              */
-
-      /* --- PROFILE HEADER (LinkedIn-blue era) --- */
-      --header-bg:         #006699;        /* LinkedIn classic blue       */
+      --page-bg:           #d6daf0;
+      --page-text:         #000000;
+      --nav-bg:            #1a1a2e;
+      --nav-accent:        #cc0000;
+      --nav-text:          #ffffff;
+      --nav-link:          #9ab0d4;
+      --header-bg:         #006699;
       --header-text:       #ffffff;
       --header-sub:        #cce0ff;
-
-      /* --- BOARD / CARD BOXES (4chan-style) --- */
-      --box-bg:            #f0e0d6;        /* 4chan post beige            */
-      --box-border:        #d9bfb7;        /* 4chan border                */
-      --box-header-bg:     #ea8;           /* 4chan section header tan    */
-      --box-header-text:   #800000;        /* maroon header text          */
-
-      /* --- SIDEBAR --- */
+      --box-bg:            #f0e0d6;
+      --box-border:        #d9bfb7;
+      --box-header-bg:     #ea8;
+      --box-header-text:   #800000;
       --sidebar-bg:        #eef2fb;
       --sidebar-border:    #6685c2;
-      --sidebar-title-bg:  #3b5998;        /* Facebook-ish sidebar title  */
+      --sidebar-title-bg:  #3b5998;
       --sidebar-title-text:#ffffff;
-
-      /* --- ACCENT / LINKS --- */
-      --link-color:        #0000ee;        /* classic blue hyperlink      */
-      --link-visited:      #551a8b;        /* classic visited purple      */
+      --link-color:        #0000ee;
+      --link-visited:      #551a8b;
       --link-hover:        #cc0000;
-
-      /* --- STAR RATING (YouTube stars) --- */
       --star-filled:       #ffc500;
       --star-empty:        #cccccc;
-
-      /* --- TAG PILLS --- */
       --tag-bg:            #3b5998;
       --tag-text:          #ffffff;
-
-      /* --- FONTS --- */
       --font-body:         Tahoma, Verdana, 'MS Sans Serif', Geneva, sans-serif;
       --font-mono:         'Courier New', Courier, monospace;
       --font-size:         13px;
-
-      /* --- LAYOUT --- */
       --page-width:        900px;
       --sidebar-width:     210px;
       --main-gap:          8px;
       --box-padding:       8px 10px;
     }
 
-    /* ================================================================
-       BASE
-       ================================================================ */
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -82,9 +57,6 @@
     a:visited { color: var(--link-visited); }
     a:hover { color: var(--link-hover); text-decoration: underline; }
 
-    /* ================================================================
-       TOP NAV BAR  (old YouTube header vibes)
-       ================================================================ */
     #topnav {
       background: var(--nav-bg);
       border-bottom: 3px solid var(--nav-accent);
@@ -156,9 +128,6 @@
       font-family: var(--font-body);
     }
 
-    /* ================================================================
-       PROFILE HEADER BANNER (LinkedIn-style)
-       ================================================================ */
     #profile-banner {
       background: var(--header-bg);
       background-image: linear-gradient(180deg, #0077aa 0%, #005580 100%);
@@ -185,7 +154,6 @@
       font-size: 28px;
       font-weight: bold;
       color: #ffffff;
-      /* ← swap for: background: url('photo.jpg') center/cover */
     }
     #profile-name-block { flex: 1; }
     #profile-name {
@@ -218,17 +186,11 @@
     }
     .pstat-label { font-size: 10px; }
 
-    /* ================================================================
-       STAR RATING (YouTube 2008)
-       ================================================================ */
     .star-rating { font-size: 16px; letter-spacing: -1px; }
     .star-on  { color: var(--star-filled); }
     .star-off { color: var(--star-empty); }
     .rating-count { font-size: 10px; color: #666; margin-left: 4px; }
 
-    /* ================================================================
-       PAGE BODY WRAPPER — two-column layout
-       ================================================================ */
     #page-wrap {
       max-width: var(--page-width);
       margin: var(--main-gap) auto 0;
@@ -243,9 +205,6 @@
       #sidebar { display: none; }
     }
 
-    /* ================================================================
-       SECTION BOX  (4chan post-box style)
-       ================================================================ */
     .section-box {
       background: var(--box-bg);
       border: 1px solid var(--box-border);
@@ -270,9 +229,6 @@
     }
     .section-box-body { padding: var(--box-padding); }
 
-    /* ================================================================
-       ABOUT ME POST  (4chan greentext / post style)
-       ================================================================ */
     .post-header {
       margin-bottom: 6px;
       font-size: 11px;
@@ -300,9 +256,6 @@
     }
     .clearfix::after { content:''; display:table; clear:both; }
 
-    /* ================================================================
-       SKILLS TABLE
-       ================================================================ */
     .skills-table {
       width: 100%;
       border-collapse: collapse;
@@ -334,9 +287,6 @@
     }
     .skill-pct { font-size: 10px; color: #666; white-space: nowrap; }
 
-    /* ================================================================
-       EXPERIENCE LIST
-       ================================================================ */
     .exp-item {
       border-bottom: 1px dotted var(--box-border);
       padding: 6px 0;
@@ -352,9 +302,6 @@
     }
     .exp-desc { font-size: 12px; color: #444; margin-top: 3px; }
 
-    /* ================================================================
-       PROJECTS — old YouTube video grid style
-       ================================================================ */
     .video-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -382,9 +329,6 @@
     .thumb-meta { color: #888; font-size: 10px; }
     .thumb-views { color: #666; font-size: 10px; }
 
-    /* ================================================================
-       TAG PILLS
-       ================================================================ */
     .tag-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
     .tag-pill {
       background: var(--tag-bg);
@@ -400,9 +344,6 @@
     .tag-pill.red    { background: #883300; }
     .tag-pill.grey   { background: #666; }
 
-    /* ================================================================
-       SIDEBAR WIDGETS
-       ================================================================ */
     .sidebar-widget {
       background: var(--sidebar-bg);
       border: 1px solid var(--sidebar-border);
@@ -446,9 +387,6 @@
       border: 2px inset #666;
     }
 
-    /* ================================================================
-       INTERESTS TABLE
-       ================================================================ */
     .interests-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -464,9 +402,6 @@
       gap: 5px;
     }
 
-    /* ================================================================
-       FOOTER
-       ================================================================ */
     #footer {
       background: var(--nav-bg);
       border-top: 3px solid var(--nav-accent);
@@ -478,17 +413,11 @@
     }
     #footer a { color: #9ab0d4; }
 
-    /* ================================================================
-       MISC HELPERS
-       ================================================================ */
     .section-intro { font-size: 12px; color: #555; margin-bottom: 6px; }
     .bold { font-weight: bold; }
     hr.dotted { border: none; border-top: 1px dotted #bbb; margin: 6px 0; }
     .small-note { font-size: 10px; color: #999; }
 
-    /* ================================================================
-       FLASH BANNER (very 2005)
-       ================================================================ */
     #flash-banner {
       background: linear-gradient(90deg, #003399, #0055cc, #003399);
       border-top: 2px solid #ffcc00;
@@ -506,9 +435,6 @@
 </head>
 <body>
 
-<!-- ================================================================
-     TOP NAV BAR
-     ================================================================ -->
 <div id="topnav">
   <div id="topnav-inner">
     <a href="index.html" id="site-logo">Json<span>Web</span></a>
@@ -517,7 +443,6 @@
       <a href="#skills"   class="nav-tab">Interesets</a>
       <a href="#projects" class="nav-tab">Programming</a>
       <a href="#contact"  class="nav-tab">Contact</a>
-      <!-- ↑ Add/remove nav tabs -->
     </div>
     <div id="nav-search">
       <input type="text" placeholder="Search profile..." disabled title="(decorative)" />
@@ -526,31 +451,24 @@
   </div>
 </div>
 
-<!-- ================================================================
-     FLASH TICKER BANNER
-     ================================================================ -->
 <div id="flash-banner">
   <marquee behavior="scroll" direction="left" scrollamount="3">
-    ★ Welcome to my profile page! ★ &nbsp;|&nbsp;
-    Currently open to new opportunities &nbsp;|&nbsp;
+    ★ Welcome to JsonWeb! ★ &nbsp;|&nbsp;
+    Currently an Unemployed Chud &nbsp;|&nbsp;
     ★ Last updated: <span id="last-updated"></span> ★ &nbsp;|&nbsp;
-    Views: <span id="view-count-inline">001,337</span>
-    <!-- ↑ Change this ticker text -->
+    Views: <span id="view-count-inline">006,667</span>
   </marquee>
 </div>
 
-<!-- ================================================================
-     PROFILE HEADER BANNER
-     ================================================================ -->
 <div id="profile-banner">
   <div id="profile-banner-inner">
 
-    <div id="avatar-box">JS</div> 
+    <div id="avatar-box">JS</div>
 
     <div id="profile-name-block">
       <div id="profile-name">Justin Son</div>
-      <div id="profile-title">Chud · Fashionista · Poop Enthusiast</div>  <!-- ← Tagline -->
-      <div id="profile-location">📍 Corte Madera, CA &nbsp;|&nbsp; 🌐 justinsonson.github.io</div>  <!-- ← Location/URL -->
+      <div id="profile-title">Chud · Fashionista · Poop Enthusiast</div>
+      <div id="profile-location">📍 Corte Madera, CA &nbsp;|&nbsp; 🌐 justinsonson.github.io</div>
     </div>
 
     <div id="profile-stats-bar">
@@ -566,23 +484,15 @@
         <span class="pstat-num">300+</span>
         <span class="pstat-label">connections</span>
       </div>
-      <!-- ↑ Edit your stats -->
     </div>
 
   </div>
 </div>
 
-<!-- ================================================================
-     MAIN TWO-COLUMN LAYOUT
-     ================================================================ -->
 <div id="page-wrap">
 
-  <!-- ============================================================
-       MAIN COLUMN
-       ============================================================ -->
   <div id="main-col">
 
-    <!-- ABOUT ME -->
     <div class="section-box" id="about">
       <div class="section-box-title">
         ▶ About Me
@@ -591,7 +501,6 @@
       <div class="section-box-body clearfix">
         <div class="post-img">
           <div class="post-img-placeholder">🧑‍💻</div>
-          <!-- ↑ Or use: <img src="photo.jpg" width="100" alt="me"> -->
         </div>
         <div class="post-header">
           <span class="post-name">Justin Son</span> &nbsp;
@@ -621,7 +530,6 @@
       </div>
     </div>
 
-    <!-- SKILLS -->
     <div class="section-box" id="skills">
       <div class="section-box-title">
         ▶ Skills &amp; Proficiency
@@ -639,7 +547,6 @@
             </tr>
           </thead>
           <tbody>
-            <!-- ↓ Edit skill rows — change name, category, bar width %, and level label -->
             <tr title="My go-to language for everything">
               <td><strong>Clothing</strong></td>
               <td><span class="tag-pill green">Lifestyle</span></td>
@@ -670,14 +577,12 @@
               <td><div class="skill-bar-wrap"><div class="skill-bar" style="width:10%"></div></div></td>
               <td class="skill-pct">Absolutely Terrible</td>
             </tr>
-            <!-- ↑ Add rows as needed -->
           </tbody>
         </table>
         <br/>
       </div>
     </div>
 
-    <!-- EXPERIENCE -->
     <div class="section-box">
       <div class="section-box-title">
         ▶ Experience
@@ -686,9 +591,9 @@
       <div class="section-box-body">
 
         <div class="exp-item">
-          <span class="exp-dates">August 2025 – Present</span>     <!-- ← Date -->
-          <div class="exp-role">Computer Programming Student</div>  <!-- ← Title -->
-          <div class="exp-company">@ Redwood High School</div>            <!-- ← Company -->
+          <span class="exp-dates">August 2025 – Present</span>
+          <div class="exp-role">Computer Programming Student</div>
+          <div class="exp-company">@ Redwood High School</div>
           <div class="exp-desc">
             Learned languages and programs such as HTML, JavaScript, CSS and VS Code,
             worked with Liam Wener terriby.
@@ -717,7 +622,6 @@
       </div>
     </div>
 
-    <!-- EDUCATION -->
     <div class="section-box">
       <div class="section-box-title">▶ Education</div>
       <div class="section-box-body">
@@ -728,13 +632,11 @@
           <div class="exp-desc">
             Taught every skillby sensei Nicholas Sullivan Friedman 
             GPA: 1.2 / 4.0. 
-            <!-- ↑ Edit education details -->
           </div>
         </div>
       </div>
     </div>
 
-    <!-- INTERESTS -->
     <div class="section-box">
       <div class="section-box-title">
         ▶ Interests / Hobbies
@@ -742,7 +644,6 @@
       </div>
       <div class="section-box-body">
         <div class="interests-grid">
-          <!-- ↓ Add/remove interest cells -->
           <div class="interest-cell">👖 Fashion</div>
           <div class="interest-cell">💪 Gym</div>
           <div class="interest-cell">💻 Programming</div>
@@ -755,15 +656,10 @@
       </div>
     </div>
 
-  </div><!-- end #main-col -->
+  </div>
 
-  <!-- ============================================================
-       SIDEBAR
-       ============================================================ -->
   <div id="sidebar">
 
-
-    <!-- ONLINE STATUS -->
     <div class="sidebar-widget">
       <div class="sidebar-widget-title">🟢 Status</div>
       <div class="sidebar-widget-body">
@@ -776,7 +672,6 @@
       </div>
     </div>
 
-    <!-- PROFILE VIEW COUNTER -->
     <div class="sidebar-widget">
       <div class="sidebar-widget-title">📊 Profile Views</div>
       <div class="sidebar-widget-body" style="text-align:center; padding:8px;">
@@ -785,7 +680,6 @@
       </div>
     </div>
 
-    <!-- TAGS / KEYWORDS -->
     <div class="sidebar-widget">
       <div class="sidebar-widget-title">🏷 Keywords</div>
       <div class="sidebar-widget-body">
@@ -799,7 +693,6 @@
       </div>
     </div>
 
-    <!-- LINKS / BOOKMARKS -->
     <div class="sidebar-widget">
       <div class="sidebar-widget-title">🔗 Links</div>
       <div class="sidebar-widget-body">
@@ -812,13 +705,10 @@
       </div>
     </div>
 
-  </div><!-- end #sidebar -->
+  </div>
 
-</div><!-- end #page-wrap -->
+</div>
 
-<!-- ================================================================
-     FOOTER
-     ================================================================ -->
 <div id="footer">
   <p>
     &copy; <span id="footer-year"></span> Justin Son &nbsp;|&nbsp;
@@ -834,13 +724,11 @@
 </div>
 
 <script>
-  // Auto-fill year and date
   const now = new Date();
   document.getElementById('footer-year').textContent = now.getFullYear();
   document.getElementById('last-updated').textContent =
     now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-  // Fake animated view counter
   let views = 6767;
   const counter = document.getElementById('view-counter');
   const inline  = document.getElementById('view-count-inline');
