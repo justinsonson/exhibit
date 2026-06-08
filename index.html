@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Website</title>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: #ffffff;   /* ✏️ CHANGE BACKGROUND COLOR */
+      color: #ffffff;        /* ✏️ CHANGE TEXT COLOR */
+      font-family: Arial, sans-serif; /* ✏️ CHANGE FONT */
+      overflow: hidden;
+    }
+
+    /* =============================================
+       SPLASH SCREEN
+    ============================================= */
+    #title-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: #000000;         /* ✏️ SPLASH BACKGROUND COLOR */
+      background-image: url(wall.avif); /* ✏️ YOUR BACKGROUND IMAGE */
+      background-size: cover;
+      background-position: center;
+      transition: opacity 0.8s ease;
+    }
+
+    #title-screen.exit {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #title-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.3); /* ✏️ OVERLAY DARKNESS (0 = none, 1 = black) */
+      pointer-events: none;
+    }
+
+    .title-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .title-heading {
+      font-size: 2.5rem;   /* ✏️ TITLE SIZE */
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .title-sub {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .title-enter {
+      font-size: 0.85rem;
+      opacity: 0.6;
+    }
+
+    /* =============================================
+       MAIN CONTENT — 3D HALLWAY
+    ============================================= */
+    #main-content {
+      position: fixed;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease 0.1s;
+    }
+
+    #main-content.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .hallway {
+      width: 100%;
+      height: 100vh;
+      perspective: 1000px;
+      perspective-origin: 50% 50%;
+      overflow: hidden;
+    }
+
+    .sections-wrap {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+
+    /* Each card/section */
+    .sec {
+      position: absolute;
+      width: 50%;
+      max-width: 500px;
+      height: 220px;
+      left: 50%;
+      top: 50%;
+      margin-left: -25%;
+      margin-top: -110px;
+      border-radius: 4px;        /* ✏️ CARD CORNER ROUNDNESS */
+      border: 1px solid #000000; /* ✏️ CARD BORDER */
+      background: #494949;       /* ✏️ CARD BACKGROUND */
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: 24px 28px;
+      gap: 6px;
+      text-decoration: none;
+      color: #ffffff;            /* ✏️ CARD TEXT COLOR */
+      will-change: transform, opacity;
+    }
+
+    .sec-number {
+      font-size: 11px;
+      opacity: 0.5;
+    }
+
+    .sec-title {
+      font-size: 1.6rem;  
+      font-weight: bold;
+    }
+
+    .sec-sub {
+      font-size: 0.85rem;
+      opacity: 0.55;
+    }
+
+    /* Prev / Next buttons */
+    .nav-hint {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      z-index: 100;
+    }
+
+    .nav-btn {
+      background: none;
+      border: 1px solid #ffffff; 
+      color: #ffffff;           
+      font-family: inherit;
+      font-size: 13px;
+      padding: 7px 18px;
+      cursor: pointer;
+    }
+
+    .nav-btn:hover {
+      background: #ffffff;       /* ✏️ BUTTON HOVER BACKGROUND */
+      color: #000000;            /* ✏️ BUTTON HOVER TEXT */
+    }
+
+    .nav-counter {
+      font-size: 12px;
+      opacity: 0.5;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    /* Side dots */
+    .dots {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 100;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ffffff;
+      opacity: 0.25;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+
+    .dot.active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       SPLASH SCREEN — click anywhere to enter
+  ============================================================ -->
+  <div id="title-screen" onclick="enterSite()" role="button" aria-label="Click to enter">
+    <div id="title-overlay"></div>
+    <div class="title-content">
+
+      <!-- ✏️ CHANGE YOUR SITE TITLE -->
+      <h1 class="title-heading">Emporium of Justin Son</h1>
+
+      <!-- ✏️ CHANGE OR DELETE THIS SUBTITLE -->
+      <p class="title-sub">Explore Anything</p>
+
+      <p class="title-enter">Click anywhere to enter</p>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       MAIN CONTENT
+  ============================================================ -->
+  <div id="main-content" aria-hidden="true">
+    <div class="hallway" id="hallway">
+      <div class="sections-wrap" id="wrap"></div>
+    </div>
+
+    <div class="dots" id="dotsEl"></div>
+
+    <nav class="nav-hint">
+      <button class="nav-btn" id="btnPrev">← prev</button>
+      <span class="nav-counter" id="counter">1 / 5</span>
+      <button class="nav-btn" id="btnNext">next →</button>
+    </nav>
+  </div>
+
+
+  <script>
+    /* ============================================================
+       YOUR SECTIONS — edit each one below
+       - title:  big text on the card
+       - sub:    small text under the title
+       - href:   the HTML file this card links to
+    ============================================================ */
+    const sections = [
+
+      {
+        number: '01',
+        title: 'Who is Justin Son?',         /* ✏️ CARD TITLE */
+        sub: 'Everything you need you NEED to know about Justin Son',      /* ✏️ CARD SUBTITLE */
+        href: 'aboutjustin.html',       /* ✏️ YOUR LINK HERE */
+      },
+      {
+        number: '02',
+        title: 'Still Life',         /* ✏️ CARD TITLE */
+        sub: 'Spot configurations in Still Lifes',      /* ✏️ CARD SUBTITLE */
+        href: 'game1.html',       /* ✏️ YOUR LINK HERE */
+      },
+      {
+        number: '03',
+        title: 'PUA Hell',       /* ✏️ CARD TITLE */
+        sub: 'Click to find out?',      /* ✏️ CARD SUBTITLE */
+        href: 'pua.html',       /* ✏️ YOUR LINK HERE */
+      },
+      {
+        number: '04',
+        title: 'J-SAT',        /* ✏️ CARD TITLE */
+        sub: 'Trivia Based on Justin Son',      /* ✏️ CARD SUBTITLE */
+        href: 'LINK_4.html',       /* ✏️ YOUR LINK HERE */
+      },
+      {
+        number: '05',
+        title: 'Vehicular Assassin',        /* ✏️ CARD TITLE */
+        sub: 'subtitle here',      /* ✏️ CARD SUBTITLE */
+        href: 'LINK_5.html',       /* ✏️ YOUR LINK HERE */
+      },
+
+      /* ✏️ ADD MORE SECTIONS: copy a block above and paste here */
+    ];
+
+
+    /* ============================================================
+       ENGINE — no need to touch anything below this line
+    ============================================================ */
+    const wrap    = document.getElementById('wrap');
+    const dotsEl  = document.getElementById('dotsEl');
+    const counter = document.getElementById('counter');
+
+    sections.forEach((s, i) => {
+      const a = document.createElement('a');
+      a.className = 'sec';
+      a.href = s.href;
+      a.innerHTML = `
+        <span class="sec-number">${s.number}</span>
+        <span class="sec-title">${s.title}</span>
+        <span class="sec-sub">${s.sub}</span>
+      `;
+      wrap.appendChild(a);
+
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      dot.addEventListener('click', () => animateTo(i));
+      dotsEl.appendChild(dot);
+    });
+
+    const secs = wrap.querySelectorAll('.sec');
+    const dots = dotsEl.querySelectorAll('.dot');
+    let progress = 0, current = 0, animating = false;
+
+    function render(prog) {
+      secs.forEach((sec, i) => {
+        const offset = i - prog;
+        const abs    = Math.abs(offset);
+        if (abs > 2.8) { sec.style.opacity = 0; sec.style.pointerEvents = 'none'; return; }
+        sec.style.opacity       = Math.max(0, 1 - abs * 0.52);
+        sec.style.pointerEvents = abs < 0.45 ? 'auto' : 'none';
+        sec.style.transform     = `translateX(${offset * 52}%) translateZ(${-abs * 340}px) rotateY(${offset * -40}deg) scale(${Math.max(0.38, 1 - abs * 0.3)})`;
+      });
+      const idx = Math.round(prog);
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      counter.textContent = `${idx + 1} / ${sections.length}`;
+    }
+
+    function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+    function animateTo(target) {
+      if (animating) return;
+      const end = Math.max(0, Math.min(sections.length - 1, target));
+      animating = true;
+      const start = progress, startTime = performance.now();
+      (function step(now) {
+        const t  = Math.min(1, (now - startTime) / 560);
+        progress = start + (end - start) * ease(t);
+        render(progress);
+        if (t < 1) requestAnimationFrame(step);
+        else { progress = end; current = end; animating = false; }
+      })(performance.now());
+    }
+
+    const hallway = document.getElementById('hallway');
+    hallway.addEventListener('wheel', e => { e.preventDefault(); if (!animating) animateTo(current + (e.deltaY > 0 ? 1 : -1)); }, { passive: false });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') animateTo(current + 1);
+      if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  animateTo(current - 1);
+    });
+    let touchY = null;
+    hallway.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
+    hallway.addEventListener('touchend',   e => {
+      if (touchY === null) return;
+      if (Math.abs(touchY - e.changedTouches[0].clientY) > 30) animateTo(current + (touchY > e.changedTouches[0].clientY ? 1 : -1));
+      touchY = null;
+    });
+    document.getElementById('btnNext').onclick = () => animateTo(current + 1);
+    document.getElementById('btnPrev').onclick = () => animateTo(current - 1);
+    render(0);
+
+    function enterSite() {
+      const title = document.getElementById('title-screen');
+      const content = document.getElementById('main-content');
+      title.classList.add('exit');
+      setTimeout(() => {
+        title.style.display = 'none';
+        content.removeAttribute('aria-hidden');
+        content.classList.add('visible');
+      }, 800);
+    }
+    document.getElementById('title-screen').addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') enterSite();
+    });
+  </script>
+
+</body>
+</html>

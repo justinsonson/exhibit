@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Don't Get Infected!!!</title>
+<style>
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background-image: url('home.jpg');
+    background-size: cover;
+    background-position: center;
+    cursor: default;
+    user-select: none;
+  }
+
+  #hud {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #16213e;
+    border-bottom: 2px solid #e94560;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 100;
+  }
+
+  #hud-label {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  #health-bar-outer {
+    width: 180px;
+    height: 20px;
+    background: #333;
+    border: 2px solid #888;
+  }
+
+  #health-bar-inner {
+    height: 100%;
+    width: 100%;
+    background: lime;
+    transition: width 0.2s;
+  }
+
+  #score-display {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  #home-link {
+    color: #aac8ff;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: auto;
+    border: 1px solid #aac8ff;
+    padding: 3px 10px;
+    border-radius: 3px;
+  }
+
+  #home-link:hover {
+    background: #aac8ff;
+    color: #16213e;
+  }
+
+  .popup {
+    position: fixed;
+    width: 320px;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #ffffff #808080 #808080 #ffffff;
+    box-shadow: 2px 2px 0 #000;
+    z-index: 200;
+  }
+
+  .popup-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 4px;
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: white;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+    gap: 6px;
+  }
+
+  .popup-title-text {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .popup-controls {
+    display: flex;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  .popup-btn {
+    width: 18px;
+    height: 16px;
+    font-size: 11px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    background: #c0c0c0;
+    border: 1.5px solid;
+    border-color: #ffffff #808080 #808080 #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    padding: 0;
+  }
+
+  .popup-btn:active {
+    border-color: #808080 #ffffff #ffffff #808080;
+  }
+
+  .popup-body {
+    width: 100%;
+    height: 200px;
+    background: white;
+    border: 2px inset #808080;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popup-body img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .popup-timer-bar-outer {
+    height: 6px;
+    background: #808080;
+    width: 100%;
+  }
+
+  .popup-timer-bar-inner {
+    height: 100%;
+    background: red;
+    width: 100%;
+  }
+
+  @keyframes shrink {
+    from { width: 100%; }
+    to { width: 0%; }
+  }
+
+  #lose-screen {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    z-index: 600;
+    background: rgba(0, 0, 0, 0.85);
+  }
+
+  #lose-screen.active {
+    display: flex;
+  }
+
+  #lose-title {
+    font-size: 64px;
+    font-weight: bold;
+    color: red;
+    font-family: Arial, sans-serif;
+  }
+
+  #lose-sub {
+    color: #aaa;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+  }
+
+  #lose-score {
+    color: white;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+  }
+
+</style>
+</head>
+<body>
+
+<div id="hud">
+  <div id="hud-label">Health:</div>
+  <div id="health-bar-outer">
+    <div id="health-bar-inner"></div>
+  </div>
+  <div id="score-display">Score: 0</div>
+
+  <a id="home-link" href="index.html">&#8592; Return to Home</a>
+</div>
+
+<!-- LOSE SCREEN -->
+<div id="lose-screen">
+  <div id="lose-title">INFECTED :(</div>
+  <div id="lose-score"></div>
+  <div id="lose-sub">restarting...</div>
+</div>
+
+<script>
+
+const POPUP_IMAGES = [
+  'pua1.avif',
+  'pua2.webp',
+  'pua3.jpg',
+  'pua4.gif',
+  'pua5.png',
+];
+
+const POPUP_TITLES = [
+  'YOU HAVE WON!!!',
+  'FREE DOWNLOAD',
+  'ALERT: Virus Detected',
+  'Congratulations!',
+  'System Warning',
+  'Your PC is at risk',
+  'CLAIM YOUR PRIZE',
+  'ERROR 0x000007E',
+  'Update Required NOW',
+  'Click Here!!!',
+  'Warning!!',
+  'Security Breach',
+];
+
+const CONFIG = {
+  maxHealth:        100,
+  damagePerMiss:    25,
+  popupLifetime:    4000,
+  minLifetime:      1500,
+  lifetimeDecay:    100,
+  spawnInterval:    1600,
+  minSpawnInterval: 500,
+  spawnAccelStep:   40,
+  restartDelay:     3000,
+};
+
+let health, score, popupCount, spawnTimer, activePopups, isPlaying;
+
+const healthBar  = document.getElementById('health-bar-inner');
+const scoreDisp  = document.getElementById('score-display');
+const loseScreen = document.getElementById('lose-screen');
+const loseScore  = document.getElementById('lose-score');
+
+startGame();
+
+function startGame() {
+  loseScreen.classList.remove('active');
+  health       = CONFIG.maxHealth;
+  score        = 0;
+  popupCount   = 0;
+  activePopups = [];
+  isPlaying    = true;
+  updateHUD();
+  scheduleNextPopup(CONFIG.spawnInterval);
+}
+
+function scheduleNextPopup(delay) {
+  if (!isPlaying) return;
+  spawnTimer = setTimeout(() => {
+    spawnPopup();
+    const nextDelay = Math.max(
+      CONFIG.minSpawnInterval,
+      CONFIG.spawnInterval - popupCount * CONFIG.spawnAccelStep
+    );
+    scheduleNextPopup(nextDelay);
+  }, delay);
+}
+
+function spawnPopup() {
+  if (!isPlaying) return;
+  popupCount++;
+
+  const lifetime = Math.max(
+    CONFIG.minLifetime,
+    CONFIG.popupLifetime - popupCount * CONFIG.lifetimeDecay
+  );
+
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+  const popW = 320, popH = 240;
+  const x = Math.random() * (W - popW - 20) + 10;
+  const y = Math.random() * (H - popH - 60) + 50;
+
+  const popup = document.createElement('div');
+  popup.className = 'popup';
+  popup.style.left = x + 'px';
+  popup.style.top  = y + 'px';
+
+  const title = POPUP_TITLES[Math.floor(Math.random() * POPUP_TITLES.length)];
+
+  let imgHTML = '';
+  if (POPUP_IMAGES.length > 0) {
+    const src = POPUP_IMAGES[Math.floor(Math.random() * POPUP_IMAGES.length)];
+    imgHTML = `<img src="${src}" alt="popup">`;
+  }
+
+  popup.innerHTML = `
+    <div class="popup-titlebar">
+      <span class="popup-title-text">${title}</span>
+      <div class="popup-controls">
+        <button class="popup-btn">_</button>
+        <button class="popup-btn">□</button>
+        <button class="popup-btn popup-close-btn">✕</button>
+      </div>
+    </div>
+    <div class="popup-body">${imgHTML}</div>
+    <div class="popup-timer-bar-outer">
+      <div class="popup-timer-bar-inner"></div>
+    </div>
+  `;
+
+  document.body.appendChild(popup);
+
+  makeDraggable(popup);
+
+  const closeBtn = popup.querySelector('.popup-close-btn');
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closePopup(popup, expireTimer, true);
+  });
+
+  popup.addEventListener('mousedown', (e) => e.stopPropagation());
+
+  const timerBar = popup.querySelector('.popup-timer-bar-inner');
+  timerBar.style.animation = `shrink ${lifetime}ms linear forwards`;
+
+  const expireTimer = setTimeout(() => {
+    closePopup(popup, null, false);
+  }, lifetime);
+
+  activePopups.push({ el: popup, timer: expireTimer });
+}
+
+function closePopup(popupEl, timer, success) {
+  if (!popupEl.parentNode) return;
+  if (timer) clearTimeout(timer);
+  activePopups = activePopups.filter(p => p.el !== popupEl);
+
+  if (success) {
+    score++;
+    updateHUD();
+  } else {
+    takeDamage();
+  }
+
+  popupEl.remove();
+}
+
+function takeDamage() {
+  if (!isPlaying) return;
+  health = Math.max(0, health - CONFIG.damagePerMiss);
+  updateHUD();
+  if (health <= 0) triggerLose();
+}
+
+function triggerLose() {
+  isPlaying = false;
+  clearTimeout(spawnTimer);
+  activePopups.forEach(p => { clearTimeout(p.timer); p.el.remove(); });
+  activePopups = [];
+
+  loseScore.textContent = 'Popups closed: ' + score;
+  loseScreen.classList.add('active');
+
+  setTimeout(() => {
+    startGame();
+  }, CONFIG.restartDelay);
+}
+
+function updateHUD() {
+  const pct = (health / CONFIG.maxHealth) * 100;
+  healthBar.style.width = pct + '%';
+  if (pct > 50) {
+    healthBar.style.background = 'lime';
+  } else if (pct > 25) {
+    healthBar.style.background = 'orange';
+  } else {
+    healthBar.style.background = 'red';
+  }
+  scoreDisp.textContent = 'Score: ' + score;
+}
+
+function makeDraggable(el) {
+  const titlebar = el.querySelector('.popup-titlebar');
+  let startX, startY, origLeft, origTop;
+
+  titlebar.addEventListener('mousedown', (e) => {
+    if (e.target.classList.contains('popup-btn')) return;
+    startX   = e.clientX;
+    startY   = e.clientY;
+    origLeft = parseInt(el.style.left);
+    origTop  = parseInt(el.style.top);
+
+    function onMove(e2) {
+      el.style.left = (origLeft + e2.clientX - startX) + 'px';
+      el.style.top  = (origTop  + e2.clientY - startY) + 'px';
+    }
+    function onUp() {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    }
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+}
+
+</script>
+</body>
+</html>

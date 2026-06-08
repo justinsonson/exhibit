@@ -1,0 +1,856 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Justin Son - Profile & Personal Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tahoma:wght@400;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ================================================================
+       🎨 CUSTOMIZATION VARIABLES — change these to restyle the page
+       ================================================================ */
+    :root {
+      /* --- GLOBAL COLORS --- */
+      --page-bg:           #d6daf0;        /* 4chan-ish lavender-grey bg  */
+      --page-text:         #000000;        /* body text                   */
+
+      /* --- TOP NAV BAR (YouTube-style) --- */
+      --nav-bg:            #1a1a2e;        /* dark nav background         */
+      --nav-accent:        #cc0000;        /* YouTube red logo accent     */
+      --nav-text:          #ffffff;        /* nav text color              */
+      --nav-link:          #9ab0d4;        /* nav link color              */
+
+      /* --- PROFILE HEADER (LinkedIn-blue era) --- */
+      --header-bg:         #006699;        /* LinkedIn classic blue       */
+      --header-text:       #ffffff;
+      --header-sub:        #cce0ff;
+
+      /* --- BOARD / CARD BOXES (4chan-style) --- */
+      --box-bg:            #f0e0d6;        /* 4chan post beige            */
+      --box-border:        #d9bfb7;        /* 4chan border                */
+      --box-header-bg:     #ea8;           /* 4chan section header tan    */
+      --box-header-text:   #800000;        /* maroon header text          */
+
+      /* --- SIDEBAR --- */
+      --sidebar-bg:        #eef2fb;
+      --sidebar-border:    #6685c2;
+      --sidebar-title-bg:  #3b5998;        /* Facebook-ish sidebar title  */
+      --sidebar-title-text:#ffffff;
+
+      /* --- ACCENT / LINKS --- */
+      --link-color:        #0000ee;        /* classic blue hyperlink      */
+      --link-visited:      #551a8b;        /* classic visited purple      */
+      --link-hover:        #cc0000;
+
+      /* --- STAR RATING (YouTube stars) --- */
+      --star-filled:       #ffc500;
+      --star-empty:        #cccccc;
+
+      /* --- TAG PILLS --- */
+      --tag-bg:            #3b5998;
+      --tag-text:          #ffffff;
+
+      /* --- FONTS --- */
+      --font-body:         Tahoma, Verdana, 'MS Sans Serif', Geneva, sans-serif;
+      --font-mono:         'Courier New', Courier, monospace;
+      --font-size:         13px;
+
+      /* --- LAYOUT --- */
+      --page-width:        900px;
+      --sidebar-width:     210px;
+      --main-gap:          8px;
+      --box-padding:       8px 10px;
+    }
+
+    /* ================================================================
+       BASE
+       ================================================================ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--page-bg);
+      background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23ffffff' fill-opacity='0.18'/%3E%3C/svg%3E");
+      color: var(--page-text);
+      font-family: var(--font-body);
+      font-size: var(--font-size);
+      line-height: 1.45;
+    }
+
+    a { color: var(--link-color); }
+    a:visited { color: var(--link-visited); }
+    a:hover { color: var(--link-hover); text-decoration: underline; }
+
+    /* ================================================================
+       TOP NAV BAR  (old YouTube header vibes)
+       ================================================================ */
+    #topnav {
+      background: var(--nav-bg);
+      border-bottom: 3px solid var(--nav-accent);
+      padding: 0;
+      width: 100%;
+    }
+    #topnav-inner {
+      max-width: var(--page-width);
+      margin: 0 auto;
+      display: flex;
+      align-items: stretch;
+      height: 46px;
+    }
+    #site-logo {
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--nav-text);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+      border-right: 1px solid #333;
+      white-space: nowrap;
+    }
+    #site-logo span { color: var(--nav-accent); }
+    #nav-links {
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 2px;
+      flex: 1;
+    }
+    .nav-tab {
+      color: var(--nav-link);
+      text-decoration: none;
+      padding: 4px 10px;
+      font-size: 12px;
+      border-radius: 2px;
+    }
+    .nav-tab:hover, .nav-tab.active {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+    .nav-tab.active { font-weight: bold; }
+    #nav-search {
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 4px;
+    }
+    #nav-search input {
+      border: 1px solid #555;
+      background: #2a2a3e;
+      color: #ddd;
+      padding: 4px 8px;
+      font-size: 12px;
+      width: 180px;
+      border-radius: 2px;
+    }
+    #nav-search button {
+      background: var(--nav-accent);
+      border: none;
+      color: #fff;
+      padding: 4px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      border-radius: 2px;
+      font-family: var(--font-body);
+    }
+
+    /* ================================================================
+       PROFILE HEADER BANNER (LinkedIn-style)
+       ================================================================ */
+    #profile-banner {
+      background: var(--header-bg);
+      background-image: linear-gradient(180deg, #0077aa 0%, #005580 100%);
+      border-bottom: 3px solid #004466;
+      padding: 0;
+    }
+    #profile-banner-inner {
+      max-width: var(--page-width);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 10px;
+    }
+    #avatar-box {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #aaccee, #6699cc);
+      border: 3px solid #ffffff;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+      color: #ffffff;
+      /* ← swap for: background: url('photo.jpg') center/cover */
+    }
+    #profile-name-block { flex: 1; }
+    #profile-name {
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--header-text);
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+      margin-bottom: 2px;
+    }
+    #profile-title {
+      font-size: 12px;
+      color: var(--header-sub);
+      margin-bottom: 4px;
+    }
+    #profile-location {
+      font-size: 11px;
+      color: #99ccee;
+    }
+    #profile-stats-bar {
+      display: flex;
+      gap: 16px;
+      text-align: center;
+    }
+    .pstat-item { color: var(--header-sub); }
+    .pstat-num {
+      display: block;
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+    }
+    .pstat-label { font-size: 10px; }
+
+    /* ================================================================
+       STAR RATING (YouTube 2008)
+       ================================================================ */
+    .star-rating { font-size: 16px; letter-spacing: -1px; }
+    .star-on  { color: var(--star-filled); }
+    .star-off { color: var(--star-empty); }
+    .rating-count { font-size: 10px; color: #666; margin-left: 4px; }
+
+    /* ================================================================
+       PAGE BODY WRAPPER — two-column layout
+       ================================================================ */
+    #page-wrap {
+      max-width: var(--page-width);
+      margin: var(--main-gap) auto 0;
+      display: grid;
+      grid-template-columns: 1fr var(--sidebar-width);
+      gap: var(--main-gap);
+      padding: 0 4px 20px;
+      align-items: start;
+    }
+    @media (max-width: 680px) {
+      #page-wrap { grid-template-columns: 1fr; }
+      #sidebar { display: none; }
+    }
+
+    /* ================================================================
+       SECTION BOX  (4chan post-box style)
+       ================================================================ */
+    .section-box {
+      background: var(--box-bg);
+      border: 1px solid var(--box-border);
+      margin-bottom: var(--main-gap);
+    }
+    .section-box-title {
+      background: var(--box-header-bg);
+      border-bottom: 1px solid var(--box-border);
+      padding: 4px 8px;
+      font-weight: bold;
+      font-size: 12px;
+      color: var(--box-header-text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-box-title .corner-tag {
+      font-weight: normal;
+      font-size: 10px;
+      color: #888;
+      font-style: italic;
+    }
+    .section-box-body { padding: var(--box-padding); }
+
+    /* ================================================================
+       ABOUT ME POST  (4chan greentext / post style)
+       ================================================================ */
+    .post-header {
+      margin-bottom: 6px;
+      font-size: 11px;
+      color: #666;
+    }
+    .post-name { color: #117743; font-weight: bold; }
+    .post-id { color: #999; font-size: 10px; font-family: var(--font-mono); }
+    .post-body { font-size: 13px; line-height: 1.6; }
+    .greentext { color: #789922; }
+    .post-img {
+      float: left;
+      margin: 0 10px 6px 0;
+      border: 2px solid var(--box-border);
+      padding: 2px;
+      background: #fff;
+    }
+    .post-img-placeholder {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, #aab8cc, #7890a8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+    }
+    .clearfix::after { content:''; display:table; clear:both; }
+
+    /* ================================================================
+       SKILLS TABLE
+       ================================================================ */
+    .skills-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .skills-table th {
+      background: #c8d0e8;
+      border: 1px solid #aab;
+      padding: 3px 6px;
+      text-align: left;
+      font-size: 11px;
+    }
+    .skills-table td {
+      border: 1px solid #ccd;
+      padding: 3px 6px;
+      background: #fff;
+      vertical-align: middle;
+    }
+    .skills-table tr:nth-child(even) td { background: #f0f4ff; }
+    .skill-bar-wrap {
+      background: #ddd;
+      height: 10px;
+      width: 100%;
+      border: 1px solid #bbb;
+    }
+    .skill-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #3366cc, #6699ff);
+    }
+    .skill-pct { font-size: 10px; color: #666; white-space: nowrap; }
+
+    /* ================================================================
+       EXPERIENCE LIST
+       ================================================================ */
+    .exp-item {
+      border-bottom: 1px dotted var(--box-border);
+      padding: 6px 0;
+    }
+    .exp-item:last-child { border-bottom: none; }
+    .exp-role { font-weight: bold; color: #003366; font-size: 13px; }
+    .exp-company { color: var(--nav-accent); font-size: 12px; }
+    .exp-dates {
+      float: right;
+      font-size: 11px;
+      color: #888;
+      font-style: italic;
+    }
+    .exp-desc { font-size: 12px; color: #444; margin-top: 3px; }
+
+    /* ================================================================
+       PROJECTS — old YouTube video grid style
+       ================================================================ */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 8px;
+    }
+    .video-thumb {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .video-thumb:hover { border-color: #0066cc; }
+    .thumb-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 4px;
+    }
+    .thumb-title { font-weight: bold; color: #003366; margin-bottom: 2px; }
+    .thumb-meta { color: #888; font-size: 10px; }
+    .thumb-views { color: #666; font-size: 10px; }
+
+    /* ================================================================
+       TAG PILLS
+       ================================================================ */
+    .tag-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+    .tag-pill {
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      padding: 2px 7px;
+      font-size: 11px;
+      border-radius: 2px;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .tag-pill:hover { background: #2a4080; color: #fff; }
+    .tag-pill.green  { background: #117743; }
+    .tag-pill.red    { background: #883300; }
+    .tag-pill.grey   { background: #666; }
+
+    /* ================================================================
+       SIDEBAR WIDGETS
+       ================================================================ */
+    .sidebar-widget {
+      background: var(--sidebar-bg);
+      border: 1px solid var(--sidebar-border);
+      margin-bottom: var(--main-gap);
+    }
+    .sidebar-widget-title {
+      background: var(--sidebar-title-bg);
+      color: var(--sidebar-title-text);
+      padding: 4px 8px;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    .sidebar-widget-body { padding: 6px 8px; font-size: 12px; }
+
+    .sidebar-link-list { list-style: none; }
+    .sidebar-link-list li {
+      border-bottom: 1px dotted #bbb;
+      padding: 3px 0;
+    }
+    .sidebar-link-list li:last-child { border-bottom: none; }
+    .sidebar-link-list a { font-size: 12px; }
+
+    .online-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      background: #00cc00;
+      border-radius: 50%;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    .view-counter {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 4px;
+      color: #cc0000;
+      background: #000;
+      padding: 4px 8px;
+      display: inline-block;
+      border: 2px inset #666;
+    }
+
+    /* ================================================================
+       INTERESTS TABLE
+       ================================================================ */
+    .interests-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+    .interest-cell {
+      background: #fff;
+      border: 1px solid #ccd;
+      padding: 4px 6px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* ================================================================
+       FOOTER
+       ================================================================ */
+    #footer {
+      background: var(--nav-bg);
+      border-top: 3px solid var(--nav-accent);
+      text-align: center;
+      padding: 8px;
+      font-size: 11px;
+      color: #888;
+      margin-top: 10px;
+    }
+    #footer a { color: #9ab0d4; }
+
+    /* ================================================================
+       MISC HELPERS
+       ================================================================ */
+    .section-intro { font-size: 12px; color: #555; margin-bottom: 6px; }
+    .bold { font-weight: bold; }
+    hr.dotted { border: none; border-top: 1px dotted #bbb; margin: 6px 0; }
+    .small-note { font-size: 10px; color: #999; }
+
+    /* ================================================================
+       FLASH BANNER (very 2005)
+       ================================================================ */
+    #flash-banner {
+      background: linear-gradient(90deg, #003399, #0055cc, #003399);
+      border-top: 2px solid #ffcc00;
+      border-bottom: 2px solid #ffcc00;
+      color: #fff;
+      text-align: center;
+      font-weight: bold;
+      font-size: 12px;
+      padding: 4px;
+      overflow: hidden;
+    }
+    #flash-banner marquee { display: block; }
+
+  </style>
+</head>
+<body>
+
+<!-- ================================================================
+     TOP NAV BAR
+     ================================================================ -->
+<div id="topnav">
+  <div id="topnav-inner">
+    <a href="index.html" id="site-logo">Json<span>Web</span></a>
+    <div id="nav-links">
+      <a href="#about"    class="nav-tab active">About</a>
+      <a href="#skills"   class="nav-tab">Interesets</a>
+      <a href="#projects" class="nav-tab">Programming</a>
+      <a href="#contact"  class="nav-tab">Contact</a>
+      <!-- ↑ Add/remove nav tabs -->
+    </div>
+    <div id="nav-search">
+      <input type="text" placeholder="Search profile..." disabled title="(decorative)" />
+      <button>Search</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     FLASH TICKER BANNER
+     ================================================================ -->
+<div id="flash-banner">
+  <marquee behavior="scroll" direction="left" scrollamount="3">
+    ★ Welcome to my profile page! ★ &nbsp;|&nbsp;
+    Currently open to new opportunities &nbsp;|&nbsp;
+    ★ Last updated: <span id="last-updated"></span> ★ &nbsp;|&nbsp;
+    Views: <span id="view-count-inline">001,337</span>
+    <!-- ↑ Change this ticker text -->
+  </marquee>
+</div>
+
+<!-- ================================================================
+     PROFILE HEADER BANNER
+     ================================================================ -->
+<div id="profile-banner">
+  <div id="profile-banner-inner">
+
+    <div id="avatar-box">JS</div> 
+
+    <div id="profile-name-block">
+      <div id="profile-name">Justin Son</div>
+      <div id="profile-title">Chud · Fashionista · Poop Enthusiast</div>  <!-- ← Tagline -->
+      <div id="profile-location">📍 Corte Madera, CA &nbsp;|&nbsp; 🌐 justinsonson.github.io</div>  <!-- ← Location/URL -->
+    </div>
+
+    <div id="profile-stats-bar">
+      <div class="pstat-item">
+        <span class="pstat-num">16+</span>
+        <span class="pstat-label">yrs alive</span>
+      </div>
+      <div class="pstat-item">
+        <span class="pstat-num">2</span>
+        <span class="pstat-label">projects</span>
+      </div>
+      <div class="pstat-item">
+        <span class="pstat-num">300+</span>
+        <span class="pstat-label">connections</span>
+      </div>
+      <!-- ↑ Edit your stats -->
+    </div>
+
+  </div>
+</div>
+
+<!-- ================================================================
+     MAIN TWO-COLUMN LAYOUT
+     ================================================================ -->
+<div id="page-wrap">
+
+  <!-- ============================================================
+       MAIN COLUMN
+       ============================================================ -->
+  <div id="main-col">
+
+    <!-- ABOUT ME -->
+    <div class="section-box" id="about">
+      <div class="section-box-title">
+        ▶ About Me
+        <span class="corner-tag">The Hellp on repeat rn</span>
+      </div>
+      <div class="section-box-body clearfix">
+        <div class="post-img">
+          <div class="post-img-placeholder">🧑‍💻</div>
+          <!-- ↑ Or use: <img src="photo.jpg" width="100" alt="me"> -->
+        </div>
+        <div class="post-header">
+          <span class="post-name">Justin Son</span> &nbsp;
+          <span class="post-id">ID: json79</span> &nbsp;
+          <span style="color:#999; font-size:10px;">Sat 06 Jun 2026 8:45</span>
+        </div>
+        <div class="post-body">
+          <p class="greentext">&gt;fashion demon</p>
+          <p class="greentext">&gt;programming noob, 4Chan rebel, chud</p>
+          <p class="greentext">&gt;i like making stuff type shii</p>
+          <br/>
+          <p>
+            안녕하세요! I'm <strong>Justin</strong>, a chud based in <strong>Corte Madera</strong>. I'm really
+            into music, clothing and anything technology. I made this website as a final project for the great 
+            <strong>Nicholas Sullivan Friedman</strong> because I want to impress him.
+          </p>
+          <div class="star-rating" title="Rate this profile">
+            <span class="star-on">★</span>
+            <span class="star-on">★</span>
+            <span class="star-on">★</span>
+            <span class="star-on">★</span>
+            <span class="star-off">★</span>
+            <span class="rating-count">(67 ratings)</span>
+          </div>
+          <div class="small-note">Rated 4.2 / 5 stars · 1019 profile views</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="section-box" id="skills">
+      <div class="section-box-title">
+        ▶ Skills &amp; Proficiency
+        <span class="corner-tag">self-assessed · no cap</span>
+      </div>
+      <div class="section-box-body">
+        <p class="section-intro">Technologies I work with regularly — hover a row for details.</p>
+        <table class="skills-table">
+          <thead>
+            <tr>
+              <th>Technology</th>
+              <th>Category</th>
+              <th>Proficiency</th>
+              <th>Lvl</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- ↓ Edit skill rows — change name, category, bar width %, and level label -->
+            <tr title="My go-to language for everything">
+              <td><strong>Clothing</strong></td>
+              <td><span class="tag-pill green">Lifestyle</span></td>
+              <td><div class="skill-bar-wrap"><div class="skill-bar" style="width:90%"></div></div></td>
+              <td class="skill-pct">Expert</td>
+            </tr>
+            <tr title="Building web UIs since forever">
+              <td><strong>Music</strong></td>
+              <td><span class="tag-pill">Communication</span></td>
+              <td><div class="skill-bar-wrap"><div class="skill-bar" style="width:85%"></div></div></td>
+              <td class="skill-pct">Advanced</td>
+            </tr>
+            <tr>
+              <td><strong>Gym</strong></td>
+              <td><span class="tag-pill green">Hobby</span></td>
+              <td><div class="skill-bar-wrap"><div class="skill-bar" style="width:78%"></div></div></td>
+              <td class="skill-pct">Advanced</td>
+            </tr>
+            <tr>
+              <td><strong>Programming</strong></td>
+              <td><span class="tag-pill grey">Hobby</span></td>
+              <td><div class="skill-bar-wrap"><div class="skill-bar" style="width:72%"></div></div></td>
+              <td class="skill-pct">Solid</td>
+            </tr>
+            <tr>
+              <td><strong>Grades</strong></td>
+              <td><span class="tag-pill red">ThingsJustinHates</span></td>
+              <td><div class="skill-bar-wrap"><div class="skill-bar" style="width:10%"></div></div></td>
+              <td class="skill-pct">Absolutely Terrible</td>
+            </tr>
+            <!-- ↑ Add rows as needed -->
+          </tbody>
+        </table>
+        <br/>
+      </div>
+    </div>
+
+    <!-- EXPERIENCE -->
+    <div class="section-box">
+      <div class="section-box-title">
+        ▶ Experience
+        <span class="corner-tag">verified™</span>
+      </div>
+      <div class="section-box-body">
+
+        <div class="exp-item">
+          <span class="exp-dates">August 2025 – Present</span>     <!-- ← Date -->
+          <div class="exp-role">Computer Programming Student</div>  <!-- ← Title -->
+          <div class="exp-company">@ Redwood High School</div>            <!-- ← Company -->
+          <div class="exp-desc">
+            Learned languages and programs such as HTML, JavaScript, CSS and VS Code,
+            worked with Liam Wener terriby.
+          </div>
+        </div>
+
+        <div class="exp-item">
+          <span class="exp-dates">August 2024 – June 2025</span>
+          <div class="exp-role">Intro to Engineering Student</div>
+          <div class="exp-company">@ Redwood High School</div>
+          <div class="exp-desc">
+            Learned Fusion 360, built wooden mechanisms and made Mr. Eller's life harder;
+            learned really proficient Fusion 360 skills to make counterfeit iPhones.
+          </div>
+        </div>
+
+        <div class="exp-item">
+          <span class="exp-dates">Forever – Now</span>
+          <div class="exp-role">The Hellp Dedicated Listener</div>
+          <div class="exp-company">@ The Hellp</div>
+          <div class="exp-desc">
+            Listens to the best band on earth, streams every song everyday every time.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- EDUCATION -->
+    <div class="section-box">
+      <div class="section-box-title">▶ Education</div>
+      <div class="section-box-body">
+        <div class="exp-item">
+          <span class="exp-dates">2025 – 2026</span>
+          <div class="exp-role">Intro to Computer Programming</div>
+          <div class="exp-company">@ Redwood High School</div>
+          <div class="exp-desc">
+            Taught every skillby sensei Nicholas Sullivan Friedman 
+            GPA: 1.2 / 4.0. 
+            <!-- ↑ Edit education details -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERESTS -->
+    <div class="section-box">
+      <div class="section-box-title">
+        ▶ Interests / Hobbies
+        <span class="corner-tag">not sponsored</span>
+      </div>
+      <div class="section-box-body">
+        <div class="interests-grid">
+          <!-- ↓ Add/remove interest cells -->
+          <div class="interest-cell">👖 Fashion</div>
+          <div class="interest-cell">💪 Gym</div>
+          <div class="interest-cell">💻 Programming</div>
+          <div class="interest-cell">🙆‍♂️ Liam Wener</div>
+          <div class="interest-cell">🎶 The Hellp</div>
+          <div class="interest-cell">😋 Eating</div>
+          <div class="interest-cell">🤑 Bag Chasing</div>
+          <div class="interest-cell">💰 Hustling</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end #main-col -->
+
+  <!-- ============================================================
+       SIDEBAR
+       ============================================================ -->
+  <div id="sidebar">
+
+
+    <!-- ONLINE STATUS -->
+    <div class="sidebar-widget">
+      <div class="sidebar-widget-title">🟢 Status</div>
+      <div class="sidebar-widget-body">
+        <p><span class="online-dot"></span> <strong>Online now</strong></p>
+        <hr class="dotted"/>
+        <p style="font-size:11px; color:#555; margin-top:4px;">
+          Open to: <strong>Full-time bag chasing</strong><br/>
+          Preferred: Online<br/>
+        </p>
+      </div>
+    </div>
+
+    <!-- PROFILE VIEW COUNTER -->
+    <div class="sidebar-widget">
+      <div class="sidebar-widget-title">📊 Profile Views</div>
+      <div class="sidebar-widget-body" style="text-align:center; padding:8px;">
+        <div class="view-counter" id="view-counter">006,767</div>
+        <div class="small-note" style="margin-top:4px;">Since June 2026</div>
+      </div>
+    </div>
+
+    <!-- TAGS / KEYWORDS -->
+    <div class="sidebar-widget">
+      <div class="sidebar-widget-title">🏷 Keywords</div>
+      <div class="sidebar-widget-body">
+        <div class="tag-list">
+          <span class="tag-pill">Hustler</span>
+          <span class="tag-pill green">Fashionista</span>
+          <span class="tag-pill">Jacked Dude</span>
+          <span class="tag-pill grey">Niche Cool Guy</span>
+          <span class="tag-pill red">Liam Fan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LINKS / BOOKMARKS -->
+    <div class="sidebar-widget">
+      <div class="sidebar-widget-title">🔗 Links</div>
+      <div class="sidebar-widget-body">
+        <ul class="sidebar-link-list">
+          <li><a href="#">Cashapp</a></li>
+          <li><a href="#">GoFundMe</a></li>
+          <li><a href="#">Reddit Posts</a></li>
+          <li><a href="#">4Chan Account</a></li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- end #sidebar -->
+
+</div><!-- end #page-wrap -->
+
+<!-- ================================================================
+     FOOTER
+     ================================================================ -->
+<div id="footer">
+  <p>
+    &copy; <span id="footer-year"></span> Justin Son &nbsp;|&nbsp;
+    <a href="#">Home</a> &nbsp;|&nbsp;
+    <a href="#">Contact</a> &nbsp;|&nbsp;
+    <a href="#">Privacy Policy</a>
+    &nbsp;|&nbsp;
+    Best viewed on Mr. SF Dell Laptops at 1024×768 resolution
+  </p>
+  <p style="margin-top:4px; font-size:10px;">
+    Made with poop and Github &nbsp;·&nbsp; Powered by Json.EXE v6.6.7
+  </p>
+</div>
+
+<script>
+  // Auto-fill year and date
+  const now = new Date();
+  document.getElementById('footer-year').textContent = now.getFullYear();
+  document.getElementById('last-updated').textContent =
+    now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+  // Fake animated view counter
+  let views = 6767;
+  const counter = document.getElementById('view-counter');
+  const inline  = document.getElementById('view-count-inline');
+  setInterval(() => {
+    views++;
+    const fmt = views.toString().padStart(7, '0').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    if (counter) counter.textContent = fmt;
+    if (inline)  inline.textContent  = fmt;
+  }, 8000);
+</script>
+
+</body>
+</html>

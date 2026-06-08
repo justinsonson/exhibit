@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Simple Clicker Game</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        text-align: center;
+        padding-top: 50px;
+    }
+
+    #counter {
+        font-size: 48px;
+        margin-bottom: 20px;
+    }
+
+    #clickButton {
+        padding: 20px 40px;
+        font-size: 24px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    #clickButton:hover {
+        background: #45a049;
+    }
+</style>
+</head>
+<body>
+
+<h1>Simple Clicker Game</h1>
+<div id="counter">0</div>
+<button id="clickButton">Click Me!</button>
+
+<script>
+    let count = 0;
+    const counterDisplay = document.getElementById("counter");
+    const button = document.getElementById("clickButton");
+
+    button.addEventListener("click", () => {
+        count++;
+        counterDisplay.textContent = count;
+    });
+</script>
+
+</body>
+</html>
